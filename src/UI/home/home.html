@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Travel Site</title>
+        <meta name='viewport' content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" type="text/css" media="screen" href="home.css" />
+        <!-- <script>
+            $(document).ready(function() {
+                let header = $('body');
+
+                let backgrounds = new Array(
+                    'url(../../assets/beachfront.png)',
+                    'url()',
+                    'url()',
+                    'url()'
+                );
+
+                let current=0;
+
+                function nextBackground() {
+                    current++;
+                    current = current % backgrounds.length;
+                    document.getElementById("body").css('background-image', backgrounds[current]);
+                }
+                setInterval(nextBackground, 1000);
+                document.getElementById("body").css('background-image', backgrounds[0]);
+            });
+        </script> -->
+    </head>
+
+    <body>
+        <div id="body" class="full-page">
+            <ul class="navbar">
+                <li><a href="#home">Home</a></li>
+            </ul>
+            <div class="travel-form">
+                <form method="GET">
+                    <div class="to-and-fro">
+                        <div>
+                        <Strong>Departure:</Strong><br>
+                        <select id='orig' name="departure">
+                            <option value=null>-----</option>
+                            <option value="charlotte">Charlotte, NC</option>
+                            <option value="chicago">Chicago, IL</option>
+                            <option value="denver">Denver, CO</option>
+                            <option value="honolulu">Honolulu, HI</option>
+                            <option value="losangeles">Los Angeles, CA</option>
+                            <option value="newyork">New York, NY</option>
+                            <option value="portland">Portland, OR</option>
+                            <option value="seatle">Seatle, WA</option>
+                            <option value="tampa">Tampa, FL</option>
+                            <option value="washington">Washington, DC</option>
+                        </select>
+                        </div>
+                        <p class="btwn-depart"> - </p>
+                        <div>
+                        <Strong>Destination:</Strong><br>
+                        <select id='dest' name="destination">
+                                <option value=null>-----</option>
+                                <option value="charlotte">Charlotte, NC</option>
+                                <option value="chicago">Chicago, IL</option>
+                                <option value="denver">Denver, CO</option>
+                                <option value="honolulu">Honolulu, HI</option>
+                                <option value="losangeles">Los Angeles, CA</option>
+                                <option value="newyork">New York, NY</option>
+                                <option value="portland">Portland, OR</option>
+                                <option value="seatle">Seatle, WA</option>
+                                <option value="tampa">Tampa, FL</option>
+                                <option value="washington">Washington, DC</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="trip-dates">
+                        <div id="type-selection">
+                        <Strong>Type of trip:</Strong><br>
+                        <input id="rad-round" type="radio" name="trip-type" value="round-trip" onclick="showRtrn()" checked> Round-trip<br>
+                        <input id="rad-one" type="radio" name="trip-type" value="one-way" onclick="hideRtrn()"> One-way<br>
+                        <script>
+                            function showRtrn(){
+                                let rad = document.getElementById("rtrn");
+                                if (rad.style.display === "none") {
+                                    rad.style.display = "block";
+                                } else {
+                                    rad.style.display = "block";
+                                }
+                            }
+                        </script> 
+                        <script>
+                            function hideRtrn(){
+                                let rad = document.getElementById("rtrn");
+                                if (rad.style.display === "block") {
+                                    rad.style.display = "none";
+                                } else {
+                                    rad.style.display = "none";
+                                }
+                            }
+                        </script>                        
+                        </div>
+                        <br>
+                        <div>
+                        <Strong>Departure Date:</Strong><br>
+                        <input type="date" name="departureday">
+                        </div>
+                        <br>
+                        <div id="rtrn">
+                        <Strong>Return Date:</Strong><br>
+                        <input type="date" name="returnday">
+                        </div>
+                    </div>
+                    <br>
+                    <div>
+                    <Strong>Number of Passengers:</Strong><br>
+                    <select id="passengers">
+                        <option value=null>-----</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                    </div>
+                    <br>
+                    <div>
+                    <button class="search" type="button" onclick="priceGen(); hideflights(); toAndFro()">
+                        Search
+                    </button>
+                    <!-- <input type="submit" value="Search"> -->
+                    </div>
+                </form>
+            </div>
+
+            <!-- <div class="tab">
+                <button class="tablinks" onclick="openFlights(event,'initial-depart')">Departing</button>
+                <button class="tablinks" onclick="openFlights(event,'return-flight')">Returning</button>
+            </div> -->
+
+            <!-- <div id="initial-depart" class="tab-content"> -->
+            <div class="flight-options">
+                <table id="depFlight" class="search-results">
+                    <caption id="cap"></caption>
+                    <tr>
+                        <th>Departure Time</th>
+                        <th>Arrival Time</th>
+                        <th>Total Time</th>
+                        <th>Layover?</th>
+                        <th>Ticket Price</th>                    
+                        <th>Select</th>
+                    </tr>
+                    <tr>
+                        <th>6:30 a.m.</th>
+                        <th>10:00 a.m.</th>
+                        <th>3 Hr. 30 min.</th>
+                        <th>no</th>
+                        <th id='0'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>7:05 a.m.</th>
+                        <th>10:25 a.m.</th>
+                        <th>3 Hr. 20 min.</th>
+                        <th>no</th>
+                        <th id='1'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>8:15 a.m.</th>
+                        <th>12:45 p.m.</th>
+                        <th>4 Hr. 30 min.</th>
+                        <th>1 (30 min)</th>
+                        <th id='2'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>9:35 a.m.</th>
+                        <th>4:00 p.m.</th>
+                        <th>6 Hr. 25 min.</th>
+                        <th>1 (2 hr)</th>
+                        <th id='3'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>11:00 a.m.</th>
+                        <th>2:15 p.m.</th>
+                        <th>3 Hr. 15 min.</th>
+                        <th>no</th>
+                        <th id='4'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>12:05 p.m.</th>
+                        <th>3:50 p.m.</th>
+                        <th>3 Hr. 45 min.</th>
+                        <th>no</th>
+                        <th id='5'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>12:55 p.m.</th>
+                        <th>4:30 p.m.</th>
+                        <th>3 Hr. 35 min.</th>
+                        <th>no</th>
+                        <th id='6'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>1:25 p.m.</th>
+                        <th>5:55 a.m.</th>
+                        <th>4 Hr. 30 min.</th>
+                        <th>1 (42 min)</th>
+                        <th id='7'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>2:10 p.m.</th>
+                        <th>6:00 p.m.</th>
+                        <th>3 Hr. 50 min.</th>
+                        <th>no</th>
+                        <th id='8'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>3:00 p.m.</th>
+                        <th>7:00 p.m.</th>
+                        <th>4 Hr. 00 min.</th>
+                        <th>1 (30 min)</th>
+                        <th id='9'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                </table>
+                <table id="retFlight" class="search-results">
+                    <caption id="cap-2"></caption>
+                    <tr>
+                        <th>Departure Time</th>
+                        <th>Arrival Time</th>
+                        <th>Total Time</th>
+                        <th>Layover?</th>
+                        <th>Ticket Price</th>                    
+                        <th>Select</th>
+                    </tr>
+                    <tr>
+                        <th>6:30 a.m.</th>
+                        <th>10:00 a.m.</th>
+                        <th>3 Hr. 30 min.</th>
+                        <th>no</th>
+                        <th id='10'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>7:05 a.m.</th>
+                        <th>10:25 a.m.</th>
+                        <th>3 Hr. 20 min.</th>
+                        <th>no</th>
+                        <th id='11'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>8:15 a.m.</th>
+                        <th>12:45 p.m.</th>
+                        <th>4 Hr. 30 min.</th>
+                        <th>1 (30 min)</th>
+                        <th id='12'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>9:35 a.m.</th>
+                        <th>4:00 p.m.</th>
+                        <th>6 Hr. 25 min.</th>
+                        <th>1 (2 hr)</th>
+                        <th id='13'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>11:00 a.m.</th>
+                        <th>2:15 p.m.</th>
+                        <th>3 Hr. 15 min.</th>
+                        <th>no</th>
+                        <th id='14'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>12:05 p.m.</th>
+                        <th>3:50 p.m.</th>
+                        <th>3 Hr. 45 min.</th>
+                        <th>no</th>
+                        <th id='15'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>12:55 p.m.</th>
+                        <th>4:30 p.m.</th>
+                        <th>3 Hr. 35 min.</th>
+                        <th>no</th>
+                        <th id='16'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>1:25 p.m.</th>
+                        <th>5:55 a.m.</th>
+                        <th>4 Hr. 30 min.</th>
+                        <th>1 (42 min)</th>
+                        <th id='17'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>2:10 p.m.</th>
+                        <th>6:00 p.m.</th>
+                        <th>3 Hr. 50 min.</th>
+                        <th>no</th>
+                        <th id='18'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                    <tr>
+                        <th>3:00 p.m.</th>
+                        <th>7:00 p.m.</th>
+                        <th>4 Hr. 00 min.</th>
+                        <th>1 (30 min)</th>
+                        <th id='19'></th>
+                        <th><button type="submit">
+                                Select
+                        </button></th>
+                    </tr>
+                </table>
+            </div>
+            <!-- </div> -->
+        </div>
+
+        <script>
+            function priceGen() {
+                let y = document.getElementById("passengers").selectedIndex;
+                for(let i = 0; i < 20; i++) {
+                    let x = y * (Math.floor((Math.random()*100)+1) +500);
+                    document.getElementById(i).innerHTML = '$' + x;
+                }
+            }
+        </script>
+        <script>
+            function hideflights(){
+                let rad = document.getElementById("depFlight");
+                let x = document.getElementById("retFlight");
+                if (rad.style.display === "none") {
+                    rad.style.display = "block";
+                } else {
+                    rad.style.display = "block";
+                }
+            }
+        </script>
+        <script>
+            function toAndFro(){
+                let orig;
+                let dest;
+                if(document.getElementById('orig').selectedIndex == 1) {
+                    orig = "Charlotte, NC";
+                } else if(document.getElementById('orig').selectedIndex == 2) {
+                    orig = "Chicago, IL";
+                } else if(document.getElementById('orig').selectedIndex == 3) {
+                    orig = "Denver, CO";
+                } else if(document.getElementById('orig').selectedIndex == 4) {
+                    orig = "Honolulu, HI";
+                } else if(document.getElementById('orig').selectedIndex == 5) {
+                    orig = "Los Angeles, CA";
+                } else if(document.getElementById('orig').selectedIndex == 6) {
+                    orig = "New York, NY";
+                } else if(document.getElementById('orig').selectedIndex == 7) {
+                    orig = "Portland, OR";
+                } else if(document.getElementById('orig').selectedIndex == 8) {
+                    orig = "Seatle, WA";
+                } else if(document.getElementById('orig').selectedIndex == 9) {
+                    orig = "Tampa, FL";
+                } else if(document.getElementById('orig').selectedIndex == 10) {
+                    orig = "Washington, DC";
+                };
+                if(document.getElementById('dest').selectedIndex == 1) {
+                    dest = "Charlotte, NC";
+                } else if(document.getElementById('dest').selectedIndex == 2) {
+                    dest = "Chicago, IL";
+                } else if(document.getElementById('dest').selectedIndex == 3) {
+                    dest = "Denver, CO";
+                } else if(document.getElementById('dest').selectedIndex == 4) {
+                    dest = "Honolulu, HI";
+                } else if(document.getElementById('dest').selectedIndex == 5) {
+                    dest = "Los Angeles, CA";
+                } else if(document.getElementById('dest').selectedIndex == 6) {
+                    dest = "New York, NY";
+                } else if(document.getElementById('dest').selectedIndex == 7) {
+                    dest = "Portland, OR";
+                } else if(document.getElementById('dest').selectedIndex == 8) {
+                    dest = "Seatle, WA";
+                } else if(document.getElementById('dest').selectedIndex == 9) {
+                    dest = "Tampa, FL";
+                } else if(document.getElementById('dest').selectedIndex == 10) {
+                    dest = "Washington, DC";
+                };
+                // let orig = document.getElementById('orig');
+                // let dest = document.getElementById('dest');
+                
+                document.getElementById('cap').innerHTML = orig + ' - ' + dest;
+                document.getElementById('cap-2').innerHTML = dest + ' - ' + orig;
+            }
+        </script>
+        <!-- <script>
+            function tableRndm() {
+                let r = Math.floor((Math.random() * 5)+5);
+                for(let i = 0; i < r; i++) {
+                    let x = Math.Floor((Math.random()*10)+20);
+                    if(x.style.display === "none") {
+                        x.style.display = "block";
+                    } 
+                }
+            }
+        </script>  -->
+    </body>
+</html>
